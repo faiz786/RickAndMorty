@@ -40,22 +40,22 @@ class CharactersFragment : Fragment(), CharactersAdapter.CharacterItemListener {
 
     private fun setupRecyclerView() {
         adapter = CharactersAdapter(this)
-        binding.charactersRv.layoutManager = LinearLayoutManager(requireContext())
-        binding.charactersRv.adapter = adapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.adapter = adapter
     }
 
     private fun setupObservers() {
         viewModel.characters.observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
-                    binding.progressBar.visibility = View.GONE
+                    binding.linearProgressIndicator.visibility = View.GONE
                     if (!it.data.isNullOrEmpty()) adapter.setItems(ArrayList(it.data))
                 }
                 Resource.Status.ERROR ->
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
 
                 Resource.Status.LOADING ->
-                    binding.progressBar.visibility = View.VISIBLE
+                    binding.linearProgressIndicator.visibility = View.VISIBLE
             }
         })
     }
