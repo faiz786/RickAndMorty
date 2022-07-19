@@ -12,5 +12,7 @@ class CharactersViewModel @ViewModelInject constructor(
     private val repository: CharacterRepository
 ) : ViewModel() {
 
-    val characters = repository.getCharacters()
+    val characters = repository.getCharacters()// get from remote
+
+    val characters = repository.getCharacters()// get from database
 }

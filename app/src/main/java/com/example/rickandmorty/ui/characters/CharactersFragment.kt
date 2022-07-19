@@ -22,7 +22,7 @@ class CharactersFragment : Fragment(), CharactersAdapter.CharacterItemListener {
 
     private var binding: CharactersFragmentBinding by autoCleared()
     private val viewModel: CharactersViewModel by viewModels()
-    private lateinit var adapter: CharactersAdapter
+    private lateinit var adapter: NewsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,17 +39,18 @@ class CharactersFragment : Fragment(), CharactersAdapter.CharacterItemListener {
     }
 
     private fun setupRecyclerView() {
-        adapter = CharactersAdapter(this)
+        adapter = NewsAdapter(this)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
     }
 
     private fun setupObservers() {
+        if(network present fetch else get from databse)
         viewModel.characters.observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     binding.linearProgressIndicator.visibility = View.GONE
-                    if (!it.data.isNullOrEmpty()) adapter.setItems(ArrayList(it.data))
+                    if (!it.data.isNullOrEmpty()) adapter.submitList(ArrayList(it.data))
                 }
                 Resource.Status.ERROR ->
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()

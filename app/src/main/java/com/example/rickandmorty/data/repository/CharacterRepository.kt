@@ -10,6 +10,16 @@ class CharacterRepository @Inject constructor(
     private val localDataSource: CharacterDao
 ) {
 
+
+    getNews() // get news from repository
+    {
+        fetch news and send back
+    }
+
+    getNews() // from database if network not present
+
+
+
     fun getCharacter(id: Int) = performGetOperation(
         databaseQuery = { localDataSource.getCharacter(id) },
         networkCall = { remoteDataSource.getCharacter(id) },

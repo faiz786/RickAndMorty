@@ -36,34 +36,34 @@ class CharacterDetailFragment : Fragment() {
         setupObservers()
     }
 
-    private fun setupObservers() {
-        viewModel.character.observe(viewLifecycleOwner, Observer {
-            when (it.status) {
-                Resource.Status.SUCCESS -> {
-                    bindCharacter(it.data!!)
-                    binding.progressBar.visibility = View.GONE
-                    binding.characterCl.visibility = View.VISIBLE
-                }
+//    private fun setupObservers() {
+//        viewModel.character.observe(viewLifecycleOwner, Observer {
+//            when (it.status) {
+//                Resource.Status.SUCCESS -> {
+//                    bindCharacter(it.data!!)
+//                    binding.progressBar.visibility = View.GONE
+//                    binding.characterCl.visibility = View.VISIBLE
+//                }
+//
+//                Resource.Status.ERROR ->
+//                    Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
+//
+//                Resource.Status.LOADING -> {
+//                    binding.progressBar.visibility = View.VISIBLE
+//                    binding.characterCl.visibility = View.GONE
+//                }
+//            }
+//        })
+//    }
 
-                Resource.Status.ERROR ->
-                    Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
-
-                Resource.Status.LOADING -> {
-                    binding.progressBar.visibility = View.VISIBLE
-                    binding.characterCl.visibility = View.GONE
-                }
-            }
-        })
-    }
-
-    private fun bindCharacter(character: Character) {
-        binding.name.text = character.name
-        binding.species.text = character.species
-        binding.status.text = character.status
-        binding.gender.text = character.gender
-        Glide.with(binding.root)
-            .load(character.image)
-            .transform(CircleCrop())
-            .into(binding.image)
-    }
+//    private fun bindCharacter(character: Character) {
+//        binding.name.text = character.name
+//        binding.species.text = character.species
+//        binding.status.text = character.status
+//        binding.gender.text = character.gender
+//        Glide.with(binding.root)
+//            .load(character.image)
+//            .transform(CircleCrop())
+//            .into(binding.image)
+//    }
 }
