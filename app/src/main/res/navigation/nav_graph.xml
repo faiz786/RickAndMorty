@@ -10,12 +10,13 @@
         android:name="com.example.rickandmorty.ui.characters.NewsListFragment"
         android:label="News"
         tools:layout="@layout/characters_fragment" >
-        <argument
-            android:name="newsObj"
-            app:argType="com.example.rickandmorty.data.models." />
         <action
             android:id="@+id/action_charactersFragment_to_characterDetailFragment"
-            app:destination="@id/newsDetailFragment" />
+            app:destination="@id/newsDetailFragment">
+        <argument
+            android:name="news_obj"
+            app:argType="com.example.rickandmorty.data.models.News" />
+        </action>
 
     </fragment>
     <fragment

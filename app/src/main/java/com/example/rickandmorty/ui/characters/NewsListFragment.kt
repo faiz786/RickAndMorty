@@ -22,6 +22,7 @@ import com.example.rickandmorty.utils.autoCleared
 import com.example.rickandmorty.utils.isConnectedToInternet
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.io.Serializable
 import java.util.*
 
 @AndroidEntryPoint
@@ -46,36 +47,46 @@ class NewsListFragment : Fragment()/* CharactersAdapter.CharacterItemListener*/ 
     }
 
     private fun setupRecyclerView() {
-        adapter = NewsAdapter { _, news ->
-//            val action = NewsListFragment.actionRegistrationToDetails(news)
+        val listener = NewsAdapter.OnClickListener(){
+                employeeSelected ->
 
+            val action = NewsListFragmentDirections.actionCharactersFragmentToCharacterDetailFragment(employeeSelected)
             findNavController().navigate(
-                R.id.action_charactersFragment_to_characterDetailFragment
+                action
             )
         }
+        adapter = NewsAdapter (listener)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
     }
 
     private fun setupObservers() {
-        if (activity!!.isConnectedToInternet()) {
+        if (requireActivity().isConnectedToInternet()) {
             viewModel.getNewsFromRemote().observe(viewLifecycleOwner, Observer {
                 when (it.status) {
                     Resource.Status.SUCCESS -> {
                         binding.linearProgressIndicator.visibility = View.GONE
                         if (it.data != null) {
                             var newsList: ArrayList<News> = ArrayList()
-                            var newsImages: ArrayList<NewsImage> = ArrayList()
+                            val images = mutableListOf<NewsImage>()
                             var newsDBList: ArrayList<NewsDbEntity> = ArrayList()
                             lateinit var newsDbEntity: NewsDbEntity
                             for (i in it.data!!.body()!!.newsItemRetros) {
-                                for (j in i.mediaItemRetros) {
-                                    var newsImage = NewsImage(
-                                        j.caption,
-                                        j.copyright,
-                                        j.mediaMetadataRetros[0].url
-                                    )
-                                    newsImages.add(newsImage)
+
+                                for (media in i.mediaItemRetros) {
+                                    if (media.type == "image" && media.mediaMetadataRetros.isNotEmpty()) {
+                                        val largestImageUrl =
+                                            media.mediaMetadataRetros[media.mediaMetadataRetros.size - 1].url
+                                        images.add(NewsImage(media.caption, media.copyright, largestImageUrl))
+                                    }
+
+//                                for (j in i.mediaItemRetros) {
+//                                    var newsImage = NewsImage(
+//                                        j.caption,
+//                                        j.copyright,
+//                                        j.mediaMetadataRetros[0].url
+//                                    )
+//                                    newsImages.add(newsImage)
                                     newsDbEntity = NewsDbEntity(
                                         i.id,
                                         i.title,
@@ -85,21 +96,22 @@ class NewsListFragment : Fragment()/* CharactersAdapter.CharacterItemListener*/ 
                                         i.author,
                                         i.source,
                                         i.url,
-                                        j.caption,
-                                        j.copyright,
-                                        j.mediaMetadataRetros[0].url
+                                        media.caption,
+                                        media.copyright,
+                                        media.mediaMetadataRetros[media.mediaMetadataRetros.size - 1].url
                                     )
+//                                }
                                 }
                                 var news = News(
                                     i.id,
                                     i.title,
                                     i.newsAbstract,
                                     i.publishedDate,
-                                    i.type,
+                                    (i.section + " " + i.subsection).trim(),
                                     i.author,
                                     i.source,
                                     i.url,
-                                    newsImages
+                                    images
                                 )
                                 newsList.add(news)
                                 newsDBList.add(newsDbEntity)
@@ -114,13 +126,14 @@ class NewsListFragment : Fragment()/* CharactersAdapter.CharacterItemListener*/ 
                         }
                     }
                     Resource.Status.ERROR ->
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Error in fetching news "+it.message, Toast.LENGTH_SHORT).show()
 
                     Resource.Status.LOADING ->
                         binding.linearProgressIndicator.visibility = View.VISIBLE
                 }
             })
-        } else {
+        }
+        else {
             viewModel.getNewsFromDatabase().observe(requireActivity(), Observer {
                 var newsList: ArrayList<News> = ArrayList()
                 var newsImages: ArrayList<NewsImage> = ArrayList()

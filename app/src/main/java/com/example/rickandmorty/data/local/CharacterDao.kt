@@ -10,7 +10,7 @@ import com.example.rickandmorty.data.entities.NewsDbEntity
 @Dao
 interface CharacterDao {
 
-    @Query("SELECT * FROM news_table")
+    @Query("SELECT * FROM news_table ORDER BY publish_date desc")
     fun getAllNews() : LiveData<List<NewsDbEntity>>
 
     @Query("SELECT * FROM news_table WHERE id = :id")

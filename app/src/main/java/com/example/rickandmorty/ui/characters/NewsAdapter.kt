@@ -12,7 +12,7 @@ import com.example.rickandmorty.databinding.ItemListContentBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NewsAdapter(val onItemClickListener: (Int, News) -> Unit) :
+class NewsAdapter(private val onClickListener: OnClickListener) :
     ListAdapter<News, NewsAdapter.NewsViewHolder>(object :
         DiffUtil.ItemCallback<News>() {
         override fun areItemsTheSame(oldItem: News, newItem: News): Boolean {
@@ -36,6 +36,10 @@ class NewsAdapter(val onItemClickListener: (Int, News) -> Unit) :
     }
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
+        val current = getItem(position)
+        holder.itemView.setOnClickListener {
+            onClickListener.onClick(current)
+        }
         holder.bind(position)
     }
 
@@ -61,5 +65,9 @@ class NewsAdapter(val onItemClickListener: (Int, News) -> Unit) :
             itemListContentBinding.textViewAuthor.text = news.author
             itemListContentBinding.textViewDate.text = simpleDateFormat.format(news.publishDate)
         }
+    }
+
+    class OnClickListener(val clickListener: (news: News) -> Unit) {
+        fun onClick(news: News) = clickListener(news)
     }
 }
