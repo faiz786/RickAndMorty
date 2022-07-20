@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.testapp.mostpopularnews.R
-import com.testapp.mostpopularnews.databinding.ItemListContentBinding
-import com.testapp.mostpopularnews.domain.models.News
 import com.bumptech.glide.Glide
+import com.example.rickandmorty.R
+import com.example.rickandmorty.data.models.News
+import com.example.rickandmorty.databinding.ItemListContentBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -43,15 +43,15 @@ class NewsAdapter(val onItemClickListener: (Int, News) -> Unit) :
         RecyclerView.ViewHolder(itemListContentBinding.root) {
         init {
             itemView.setOnClickListener {
-                onItemClickListener(bindingAdapterPosition, getItem(bindingAdapterPosition))
+//                onItemClickListener(bindingAdapterPosition, getItem(bindingAdapterPosition))
             }
         }
 
         fun bind(position: Int) {
             val news = getItem(position)
-            if (news.images.isNotEmpty()) {
+            if (news.images!!.isNotEmpty()) {
                 Glide.with(itemView.context)
-                    .load(news.images[0].url)
+                    .load(news.images?.get(0)!!.url)
                     .circleCrop()
                     .placeholder(R.drawable.ic_news_icon)
                     .error(R.drawable.ic_news_icon)

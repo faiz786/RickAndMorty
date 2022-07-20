@@ -3,21 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/charactersFragment">
+    app:startDestination="@id/newsListFragment">
 
     <fragment
-        android:id="@+id/charactersFragment"
-        android:name="com.example.rickandmorty.ui.characters.CharactersFragment"
-        android:label="Characters"
+        android:id="@+id/newsListFragment"
+        android:name="com.example.rickandmorty.ui.characters.NewsListFragment"
+        android:label="News"
         tools:layout="@layout/characters_fragment" >
+        <argument
+            android:name="newsObj"
+            app:argType="com.example.rickandmorty.data.models." />
         <action
             android:id="@+id/action_charactersFragment_to_characterDetailFragment"
-            app:destination="@id/characterDetailFragment" />
+            app:destination="@id/newsDetailFragment" />
 
     </fragment>
     <fragment
-        android:id="@+id/characterDetailFragment"
-        android:name="com.example.rickandmorty.ui.characterdetail.CharacterDetailFragment"
-        android:label="Character Detail"
+        android:id="@+id/newsDetailFragment"
+        android:name="com.example.rickandmorty.ui.characterdetail.NewsDetailFragment"
+        android:label="News Detail"
         tools:layout="@layout/character_detail_fragment" />
 </navigation>

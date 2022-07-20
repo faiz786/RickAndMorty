@@ -5,22 +5,21 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.rickandmorty.data.entities.Character
+import com.example.rickandmorty.data.entities.NewsDbEntity
 
 @Dao
 interface CharacterDao {
 
-    @Query("SELECT * FROM characters")
-    fun getAllCharacters() : LiveData<List<Character>>
+    @Query("SELECT * FROM news_table")
+    fun getAllNews() : LiveData<List<NewsDbEntity>>
 
-    @Query("SELECT * FROM characters WHERE id = :id")
-    fun getCharacter(id: Int): LiveData<Character>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(characters: List<Character>)
+    @Query("SELECT * FROM news_table WHERE id = :id")
+    fun getNews(id: Int): LiveData<NewsDbEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(character: Character)
+    suspend fun insertAll(newsDbEntity: List<NewsDbEntity>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(newsDbEntity: NewsDbEntity)
 
 }

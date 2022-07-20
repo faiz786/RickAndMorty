@@ -1,4 +1,4 @@
-package com.example.rickandmorty.data.entities
+package com.example.rickandmorty.data.models
 
 data class NewsImage(
     val caption: String,

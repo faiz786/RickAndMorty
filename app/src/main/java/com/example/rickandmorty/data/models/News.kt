@@ -1,6 +1,10 @@
-package com.example.rickandmorty.data.entities
+package com.example.rickandmorty.data.models
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+import java.io.Serializable
 import java.util.*
+
 
 data class News(
     val id: Long,
@@ -11,5 +15,5 @@ data class News(
     val author: String,
     val source: String,
     val url: String,
-    val images: List<NewsImage>
-)
+    val images: List<NewsImage>?
+):Serializable

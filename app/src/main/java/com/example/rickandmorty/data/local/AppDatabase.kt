@@ -4,9 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.rickandmorty.data.entities.Character
+import androidx.room.TypeConverters
+import com.example.rickandmorty.data.entities.NewsDbEntity
+import com.example.rickandmorty.utils.DateConverter
 
-@Database(entities = [Character::class], version = 1, exportSchema = false)
+@Database(entities = [NewsDbEntity::class], version = 1, exportSchema = false)
+@TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun characterDao(): CharacterDao
@@ -18,7 +21,7 @@ abstract class AppDatabase : RoomDatabase() {
             instance ?: synchronized(this) { instance ?: buildDatabase(context).also { instance = it } }
 
         private fun buildDatabase(appContext: Context) =
-            Room.databaseBuilder(appContext, AppDatabase::class.java, "characters")
+            Room.databaseBuilder(appContext, AppDatabase::class.java, "NewsDatabase")
                 .fallbackToDestructiveMigration()
                 .build()
     }
